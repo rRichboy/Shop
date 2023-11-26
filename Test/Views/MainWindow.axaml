@@ -1,0 +1,57 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Test.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Test.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Test">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+	
+	
+	<DockPanel Width="">
+		
+		<StackPanel>
+			<TextBlock Margin="10 7 0 0">Id:</TextBlock>
+			<TextBox Name="id" Margin="10" Width="100"></TextBox>
+			<TextBlock Margin="10 7 0 0">Название:</TextBlock>
+			<TextBox Name="pr_name" Margin="10" Width="100"></TextBox>
+			<TextBlock Margin="10 7 0 0">Описание:</TextBlock>
+			<TextBox Name="desc" Margin="10" Width="100"></TextBox>
+			<TextBlock Margin="10 7 0 0">Цена:</TextBlock>
+			<TextBox Name="price" Margin="10" Width="100"></TextBox>
+			<Button Click="Button_Click" HorizontalContentAlignment="Center" Margin="10 0 0 0" Width="100">Сохранить</Button>
+		</StackPanel>
+					
+	
+		<DataGrid Margin="20" ItemsSource="{Binding Products}"
+                  GridLinesVisibility="All"
+                  BorderThickness="1" BorderBrush="Gray"
+                  IsReadOnly="True"
+                  CanUserSortColumns="False"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="ID продукта" Width="2*" MaxWidth="60"
+                                    Binding="{Binding Id}"  />
+				<DataGridTextColumn Header="Наименование продукта" Width="2*" MaxWidth="300"
+                                    Binding="{Binding ProductName}"  />
+				<DataGridTextColumn Header="Описание"  Width="2*" MaxWidth="300"
+                                    Binding="{Binding Description}" />
+				<DataGridTextColumn Header="Цена"  Width="2*" MaxWidth="300"
+                                    Binding="{Binding Price}"    />
+			</DataGrid.Columns>
+		</DataGrid>
+	</DockPanel>
+	
+</Window>
