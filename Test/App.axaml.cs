@@ -17,7 +17,7 @@ namespace Test
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow
+                desktop.MainWindow = new RegWindow()
                 {
                     DataContext = new MainWindowViewModel(),
                 };

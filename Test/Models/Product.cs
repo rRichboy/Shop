@@ -11,5 +11,5 @@ public partial class Product
 
     public string Description { get; set; }
 
-    public int Price { get; set; }
+    public decimal Price { get; set; }
 }
