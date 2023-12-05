@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Npgsql;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Test.Context;
 using Test.Models;
@@ -15,6 +16,7 @@ namespace Test.ViewModels
         public ObservableCollection<Product> Products { get; set; }
 
         public ObservableCollection<Product> CartList { get; set; }
+        public object SelectedQuantities { get; internal set; }
 
         public TextBox id;
         public TextBox pr_name;
@@ -22,11 +24,13 @@ namespace Test.ViewModels
         public TextBox price;
         public TextBox dell_id;
 
+
         public MainWindowViewModel()
         {
             CartList = new ObservableCollection<Product>();
 
             InitializeData();
+
         }
 
         public void InitializeData()

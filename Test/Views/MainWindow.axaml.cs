@@ -1,7 +1,10 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using Test.Models;
 using Test.ViewModels;
 
@@ -10,6 +13,19 @@ namespace Test.Views
     public partial class MainWindow : Window
     {
         private readonly MainWindowViewModel viewModel;
+
+        private int selectedQuantity = 1;
+
+        private List<Product> selectedProducts = new List<Product>();
+
+        private decimal totalAmount = 0;
+
+
+        private void Initialize()
+        {
+            totalAmountTextBlock = this.FindControl<TextBlock>("TotalAmountTextBlock");
+        }
+
 
         public MainWindow()
         {
@@ -24,8 +40,7 @@ namespace Test.Views
             viewModel = new MainWindowViewModel();
             DataContext = viewModel;
             DG.IsVisible = true;
-            Admin.IsVisible = true;
-            
+            Admin.IsVisible = true;            
         }
 
         public void Button_Click(object sender, RoutedEventArgs e)
@@ -53,23 +68,65 @@ namespace Test.Views
 
             spinner.Content = value;
 
-            var SelectedItem = DGs.SelectedItem as Product;
+            var selectedProduct = DGs.SelectedItem as Product;
+            if (selectedProduct != null)
+            {
+                selectedProduct.Quantity = value;
 
-            (DataContext as MainWindowViewModel).CartList.Add(SelectedItem);
-
+                if (!selectedProducts.Contains(selectedProduct))
+                {
+                    selectedProducts.Add(selectedProduct);
+                }
+            }
         }
 
         private void Button_Click2(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             Cart.IsVisible = true;
-            
-            var SelectedItem = DGs.SelectedItem as Product;
 
-            (DataContext as MainWindowViewModel).CartList.Add(SelectedItem);
+            foreach (var selectedProduct in selectedProducts)
+            {
+                var existingProduct = (DataContext as MainWindowViewModel).CartList.FirstOrDefault(p => p.Id == selectedProduct.Id);
+                if (existingProduct != null)
+                {
+                    existingProduct.Quantity += selectedProduct.Quantity;
+                }
+                else
+                {
+                    var newProduct = new Product
+                    {
+                        Id = selectedProduct.Id,
+                        ProductName = selectedProduct.ProductName,
+                        Description = selectedProduct.Description,
+                        Price = selectedProduct.Price,
+                        Quantity = selectedProduct.Quantity
+                    };
+                    (DataContext as MainWindowViewModel).CartList.Add(newProduct);
+
+                    UpdateTotalAmount();
+
+                }
+            }
+
+            selectedProducts.Clear();
 
             viewModel.SelectData(id, pr_name, desc, price);
+
         }
 
+        private void UpdateTotalAmount()
+        {
+            totalAmount = 0;
+
+            foreach (var selectedProduct in (DataContext as MainWindowViewModel).CartList)
+            {
+                totalAmount += selectedProduct.Price * selectedProduct.Quantity;
+            }
+
+            totalAmountTextBlock.Text = $"Общая сумма в корзине: {totalAmount:C}";
+        }
+
+       
         private void Button_Click3(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             if (GridCart.Columns.Count > 0) GridCart.IsVisible = true;
@@ -78,11 +135,8 @@ namespace Test.Views
 
             (DataContext as MainWindowViewModel).CartList.Remove(SelectedItem);
 
-        }
+            UpdateTotalAmount1();
 
-        private void Button_Click4(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-        {
-            //
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
