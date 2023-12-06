@@ -14,8 +14,6 @@ namespace Test.Views
     {
         private readonly MainWindowViewModel viewModel;
 
-        private int selectedQuantity = 1;
-
         private List<Product> selectedProducts = new List<Product>();
 
         private decimal totalAmount = 0;
@@ -45,12 +43,12 @@ namespace Test.Views
 
         public void Button_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.SaveDataToDatabaseAsync(id, pr_name, desc, price);
+            viewModel.SaveDataToDatabaseAsync(pr_name, desc, price,Errr);
         }
 
         public void Button_Click1(object sender, RoutedEventArgs e)
         {
-            viewModel.DeleteData(int.Parse(dell_id.Text));
+            viewModel.DeleteData(pr_name1, Errr);
         }
 
         private void ButtonSpinner_Spin(object? sender, Avalonia.Controls.SpinEventArgs e)
@@ -110,7 +108,7 @@ namespace Test.Views
 
             selectedProducts.Clear();
 
-            viewModel.SelectData(id, pr_name, desc, price);
+            viewModel.SelectData(pr_name, desc, price);
 
         }
 
@@ -142,6 +140,7 @@ namespace Test.Views
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string selectedOption = (myComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            Errr.Text = string.Empty;
 
             if (selectedOption == "Добавить")
             {

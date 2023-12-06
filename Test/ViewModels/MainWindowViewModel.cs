@@ -18,11 +18,11 @@ namespace Test.ViewModels
         public ObservableCollection<Product> CartList { get; set; }
         public object SelectedQuantities { get; internal set; }
 
-        public TextBox id;
         public TextBox pr_name;
         public TextBox desc;
         public TextBox price;
-        public TextBox dell_id;
+        public TextBox pr_name1;
+        public TextBlock Errr;
 
 
         public MainWindowViewModel()
@@ -42,9 +42,8 @@ namespace Test.ViewModels
         }
 
         //добавить в бд
-        public async Task SaveDataToDatabaseAsync(TextBox id, TextBox pr_name, TextBox desc, TextBox price)
+        public async Task SaveDataToDatabaseAsync(TextBox pr_name, TextBox desc, TextBox price, TextBlock Errr)
         {
-            int.TryParse(id.Text, out int productId);
             string productName = pr_name.Text;
             string description = desc.Text;
             decimal.TryParse(price.Text, out decimal productPrice);
@@ -73,21 +72,20 @@ namespace Test.ViewModels
                     Products = new ObservableCollection<Product>(context.Products);
                 }
 
-                id.Text = string.Empty;
                 pr_name.Text = string.Empty;
                 desc.Text = string.Empty;
                 price.Text = string.Empty;
             }
             catch (Exception ex)
             {
-
+                Errr.Text = "Товар с таким именем уже существует";
             }
+
         }
 
         //удалить с бд
-        public async Task DeleteData(int dell_id)
+        public async Task DeleteData(TextBox pr_name1,TextBlock Errr)
         {
-
             try
             {
                 using (var connection = new NpgsqlConnection("Host=localhost;Database=Test;Username=postgres;Password=admin"))
@@ -97,9 +95,9 @@ namespace Test.ViewModels
                     using (var cmd = new NpgsqlCommand())
                     {
                         cmd.Connection = connection;
-                        cmd.CommandText = "DELETE FROM products WHERE id = @id";
+                        cmd.CommandText = "DELETE FROM products WHERE product_name = @product_name";
 
-                        cmd.Parameters.AddWithValue("id", dell_id);
+                        cmd.Parameters.AddWithValue("product_name", pr_name1.Text);
                         await cmd.ExecuteNonQueryAsync();
                     }
                 }
@@ -108,20 +106,20 @@ namespace Test.ViewModels
                 {
                     Products = new ObservableCollection<Product>(context.Products);
                 }
-                id.Text = string.Empty;
+
+                pr_name1.Text = string.Empty;
             }
 
             catch (Exception ex)
-            { 
-                
+            {
+                Errr.Text = "Товар с таким именем не существует";
             }
 
         }
 
         //выбор+добавить в корзину
-        public async Task SelectData(TextBox id, TextBox pr_name, TextBox desc, TextBox price)
+        public async Task SelectData(TextBox pr_name, TextBox desc, TextBox price)
         {
-            int.TryParse(id.Text, out int productId);
             string productName = pr_name.Text;
             string description = desc.Text;
             decimal.TryParse(price.Text, out decimal productPrice);
@@ -135,9 +133,9 @@ namespace Test.ViewModels
                     using (var cmd = new NpgsqlCommand())
                     {
                         cmd.Connection = connection;
-                        cmd.CommandText = "SELECT * FROM products WHERE id = @id";
+                        cmd.CommandText = "SELECT * FROM products WHERE product_name = @product_name";
 
-                        cmd.Parameters.AddWithValue("id", productId);
+                        cmd.Parameters.AddWithValue("product_name", pr_name);
                         await cmd.ExecuteNonQueryAsync();
                     }
                 }
@@ -154,7 +152,7 @@ namespace Test.ViewModels
 
             }
 
+            
         }
-
     }
 }

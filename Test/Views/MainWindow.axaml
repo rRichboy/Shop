@@ -101,8 +101,6 @@
 						<ComboBoxItem Content="Удалить" />
 					</ComboBox>
 					<StackPanel IsVisible="False" x:Name="add">
-						<TextBlock x:Name="addTextBlock">Id:</TextBlock>
-						<TextBox HorizontalAlignment="Left" x:Name="id" Width="100"></TextBox>
 						<TextBlock x:Name="prNameTextBlock">Название:</TextBlock>
 						<TextBox HorizontalAlignment="Left" x:Name="pr_name" Width="100"></TextBox>
 						<TextBlock x:Name="descTextBlock">Описание:</TextBlock>
@@ -112,10 +110,11 @@
 						<Button Margin="0 10 0 0" x:Name="saveButton" Click="Button_Click" Width="100">Сохранить</Button>
 					</StackPanel>
 					<StackPanel IsVisible="False" x:Name="del">
-						<TextBlock x:Name="delTextBlock">Id:</TextBlock>
-						<TextBox HorizontalAlignment="Left" x:Name="dell_id" Width="100"></TextBox>
+						<TextBlock x:Name="delTextBlock">Название:</TextBlock>
+						<TextBox HorizontalAlignment="Left" x:Name="pr_name1" Width="100"></TextBox>
 						<Button Margin="0 10 0 0" x:Name="deleteButton" Click="Button_Click1" Width="100">Удалить</Button>
 					</StackPanel>
+					<TextBlock Name="Errr"></TextBlock>
 				</StackPanel>
 			</TabItem>
 		</TabControl>

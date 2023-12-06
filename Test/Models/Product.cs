@@ -15,5 +15,4 @@ public partial class Product
 
     public decimal Quantity { get; set; }
 
-
 }
