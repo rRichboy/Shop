@@ -151,8 +151,6 @@ namespace Test.ViewModels
             {
 
             }
-
-            
         }
     }
 }

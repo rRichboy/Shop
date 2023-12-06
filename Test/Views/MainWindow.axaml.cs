@@ -18,11 +18,10 @@ namespace Test.Views
 
         private decimal totalAmount = 0;
 
-
-        private void Initialize()
-        {
-            totalAmountTextBlock = this.FindControl<TextBlock>("TotalAmountTextBlock");
-        }
+        //private void Initialize()
+        //{
+        //    totalAmountTextBlock = this.FindControl<TextBlock>("TotalAmountTextBlock");
+        //}
 
 
         public MainWindow()
