@@ -135,7 +135,7 @@ namespace Test.Views
 
             (DataContext as MainWindowViewModel).CartList.Remove(SelectedItem);
 
-            UpdateTotalAmount1();
+            UpdateTotalAmount();
 
         }
 
